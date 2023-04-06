@@ -3,7 +3,7 @@ function submitData(name, email) {
       name: name,
       email: email
     };
-  
+    
     const configObj = {
       method: "POST",
       headers: {
@@ -12,9 +12,14 @@ function submitData(name, email) {
       },
       body: JSON.stringify(formData)
     };
-  
+    
     return fetch("http://localhost:3000/users", configObj)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then(data => {
         const id = data.id;
         document.body.innerHTML += `<p>${id}</p>`;
